@@ -86,7 +86,20 @@ pasteBtn.addEventListener("click", function(e) {
     var progress = addRow(file);
     uploadFile(file, progress);
 });
-
+//Maybe don't use the `window` object?
+window.addEventListener("paste", function(e) {
+    e.preventDefault();
+    for (var i = 0 ; i < e.clipboardData.items.length ; i++) {
+        var item = e.clipboardData.items[i];
+        if (item.type.indexOf("image") != -1) {
+            var file = item.getAsFile();
+            var progress = addRow(file);
+            uploadFile(file, progress);
+        } else {
+            console.log("Pasted content is not an image");
+        }
+    }
+});
 function uploadFile(file, progress) {
     var bar = progress.querySelector(".progress-bar");
     var xhr = new XMLHttpRequest();
